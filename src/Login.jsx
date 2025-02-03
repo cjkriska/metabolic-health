@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+const axios = require('axios');
 
 function Login() {
   const handleGoogleLogin = async () => {
