@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "jest": {
+    "transformIgnorePatterns": ["node_modules/(?!axios)/"]
+  },
   "dependencies": {
     "@testing-library/react": "^16.2.0",
     "axios": "^1.7.9",
