@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 
-const Login = () => {
+function Login() {
   const handleGoogleLogin = async () => {
     try {
       const response = await axios.get("/auth/google");
@@ -27,6 +27,6 @@ const Login = () => {
       <button onClick={handleFacebookLogin}>Login with Facebook</button>
     </div>
   );
-};
+}
 
 export default Login;
