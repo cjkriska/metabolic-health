@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import AppHeader from "./AppHeader.js";
 import Home from "./Home.js";
-import Login from "./Login.jsx";
+import Login from "./Login.js";
 import Signup from "./Signup.js";
 import Profile from "./Profile.js";
 import OAuth2RedirectHandler from "./OAuth2RedirectHandler.js";
