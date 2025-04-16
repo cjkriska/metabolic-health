@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import AppHeader from "./AppHeader.js";
 import Home from "./Home.js";
 import Login from "./Login.js";
@@ -11,9 +11,7 @@ import LoadingIndicator from "./LoadingIndicator.js";
 import { getCurrentUser } from "./APIUtils.js";
 import { ACCESS_TOKEN } from "./constants.js";
 import PrivateRoute from "./PrivateRoute.js";
-import Alert from "react-s-alert";
-import "react-s-alert/dist/s-alert-default.css";
-import "react-s-alert/dist/s-alert-css-effects/slide.css";
+import { ToastContainer, toast } from "react-toastify";
 import "./App.css";
 
 class App extends Component {
@@ -51,7 +49,9 @@ class App extends Component {
       authenticated: false,
       currentUser: null,
     });
-    Alert.success("You're safely logged out!");
+    toast.success("You're safely logged out!", {
+      theme: "colored",
+    });
   }
 
   componentDidMount() {
@@ -73,13 +73,32 @@ class App extends Component {
         </div>
         <div className="app-body">
           <Switch>
-            <Route exact path="/" component={Home}></Route>
-            <PrivateRoute
+            <Route exact path="/">
+              <Home />
+            </Route>
+            {/* <PrivateRoute
               path="/profile"
               authenticated={this.state.authenticated}
               currentUser={this.state.currentUser}
               component={Profile}
-            ></PrivateRoute>
+            /> */}
+            <Route
+              path="/profile"
+              render={() =>
+                this.state.authenticated ? (
+                  <Profile
+                    currentUser={this.state.currentUser}
+                    path="/profile"
+                  />
+                ) : (
+                  <Redirect
+                    to={{
+                      pathname: "/login",
+                    }}
+                  />
+                )
+              }
+            />
             <Route
               path="/login"
               render={(props) => (
@@ -99,13 +118,14 @@ class App extends Component {
             <Route component={NotFound}></Route>
           </Switch>
         </div>
-        <Alert
+        <ToastContainer />
+        {/* <Alert
           stack={{ limit: 3 }}
           timeout={3000}
           position="top-right"
           effect="slide"
           offset={65}
-        />
+        /> */}
       </div>
     );
   }
