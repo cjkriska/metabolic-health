@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState, useEffect } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import AppHeader from "./AppHeader.js";
 import Home from "./Home.js";
@@ -14,61 +14,54 @@ import PrivateRoute from "./PrivateRoute.js";
 import { ToastContainer, toast } from "react-toastify";
 import "./App.css";
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      authenticated: false,
-      currentUser: null,
-      loading: true,
-    };
+function App() {
 
-    this.loadCurrentlyLoggedInUser = this.loadCurrentlyLoggedInUser.bind(this);
-    this.handleLogout = this.handleLogout.bind(this);
-  }
+  const [currentUser, setCurrentUser] = useState(null);
+  const [authenticated, setAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  loadCurrentlyLoggedInUser() {
+  useEffect(() => {
+    return () => {
+      loadCurrentlyLoggedInUser();
+    }
+  }, []);
+  
+  useEffect(() => {
+      loadCurrentlyLoggedInUser();
+  }, []);
+  
+  const loadCurrentlyLoggedInUser = () => {
     getCurrentUser()
       .then((response) => {
-        this.setState({
-          currentUser: response,
-          authenticated: true,
-          loading: false,
-        });
+        setCurrentUser(response);
+        setAuthenticated(true);
+        setLoading(false);
       })
       .catch((error) => {
-        this.setState({
-          loading: false,
-        });
+        setLoading(false);
       });
   }
 
-  handleLogout() {
+  const handleLogout = () => {
     localStorage.removeItem(ACCESS_TOKEN);
-    this.setState({
-      authenticated: false,
-      currentUser: null,
-    });
+    setAuthenticated(false);
+    setCurrentUser(null);
     toast.success("You're safely logged out!", {
       theme: "colored",
     });
   }
 
-  componentDidMount() {
-    this.loadCurrentlyLoggedInUser();
+  if(loading) {
+    return <LoadingIndicator />
   }
 
-  render() {
-    if (this.state.loading) {
-      return <LoadingIndicator />;
-    }
 
     return (
       <div className="app">
         <div className="app-top-box">
           <AppHeader
-            authenticated={this.state.authenticated}
-            onLogout={this.handleLogout}
+            authenticated={authenticated}
+            onLogout={handleLogout}
           />
         </div>
         <div className="app-body">
@@ -84,10 +77,12 @@ class App extends Component {
             /> */}
             <Route
               path="/profile"
-              render={() =>
-                this.state.authenticated ? (
+              render={() => (
+                console.log(authenticated),
+                console.log(currentUser),
+                authenticated ? (
                   <Profile
-                    currentUser={this.state.currentUser}
+                    currentUser={currentUser}
                     path="/profile"
                   />
                 ) : (
@@ -97,18 +92,19 @@ class App extends Component {
                     }}
                   />
                 )
+              )
               }
             />
             <Route
               path="/login"
               render={(props) => (
-                <Login authenticated={this.state.authenticated} {...props} />
+                <Login authenticated={authenticated} {...props} />
               )}
             ></Route>
             <Route
               path="/signup"
               render={(props) => (
-                <Signup authenticated={this.state.authenticated} {...props} />
+                <Signup authenticated={authenticated} {...props} />
               )}
             ></Route>
             <Route
@@ -118,17 +114,11 @@ class App extends Component {
             <Route component={NotFound}></Route>
           </Switch>
         </div>
+
         <ToastContainer />
-        {/* <Alert
-          stack={{ limit: 3 }}
-          timeout={3000}
-          position="top-right"
-          effect="slide"
-          offset={65}
-        /> */}
+
       </div>
     );
-  }
 }
 
 export default App;
