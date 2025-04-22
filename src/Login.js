@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState, useCallback } from "react";
 import "./css/Login.css";
 import {
   GOOGLE_AUTH_URL,
@@ -13,11 +13,11 @@ import googleLogo from "./images/google-logo.png";
 import githubLogo from "./images/github-logo.png";
 import { toast } from "react-toastify";
 
-class Login extends Component {
-  componentDidMount() {
+function Login(props) {
+  {/*componentDidMount() {
     // If the OAuth2 login encounters an error, the user is redirected to the /login page with an error.
     // Here we display the error and then remove the error query parameter from the location.
-    if (this.props.location.state && this.props.location.state.error) {
+  if (this.props.location.state && this.props.location.state.error) {
       setTimeout(() => {
         toast.error(this.props.location.state.error);
         this.props.history.replace({
@@ -26,15 +26,26 @@ class Login extends Component {
         });
       }, 100);
     }
-  }
+  }*/}
 
-  render() {
-    if (this.props.authenticated) {
+    useEffect(() => {
+      if(props.location.state && props.location.state.error) {
+        setTimeout(() => {
+          toast.error(props.location.state.error);
+          props.history.replace({
+            pathname: props.location.pathname,
+            state: {},
+          });
+        }, 100);
+      }
+    },[]);
+
+    if (props.authenticated) {
       return (
         <Redirect
           to={{
             pathname: "/",
-            state: { from: this.props.location },
+            state: { from: props.location },
           }}
         />
       );
@@ -48,24 +59,23 @@ class Login extends Component {
           <div className="or-separator">
             <span className="or-text">OR</span>
           </div>
-          <LoginForm {...this.props} />
+          <LoginForm {...props} />
           <span className="signup-link">
             New user? <Link to="/signup">Sign up!</Link>
           </span>
         </div>
       </div>
     );
-  }
+  
 }
 
-class SocialLogin extends Component {
-  render() {
+function SocialLogin() {
     return (
       <div className="social-login">
         <a className="btn btn-block social-btn google" href={GOOGLE_AUTH_URL}>
           <img src={googleLogo} alt="Google" /> Log in with Google
         </a>
-        <a
+        {/* <a
           className="btn btn-block social-btn facebook"
           href={FACEBOOK_AUTH_URL}
         >
@@ -73,14 +83,14 @@ class SocialLogin extends Component {
         </a>
         <a className="btn btn-block social-btn github" href={GITHUB_AUTH_URL}>
           <img src={githubLogo} alt="Github" /> Log in with Github
-        </a>
+        </a> */}
       </div>
     );
-  }
 }
 
-class LoginForm extends Component {
-  constructor(props) {
+function LoginForm(props) {
+
+{/*constructor(props) {
     super(props);
     this.state = {
       email: "",
@@ -88,22 +98,40 @@ class LoginForm extends Component {
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-  }
+  }*/}
 
-  handleInputChange(event) {
+  const [state, setState] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleInputChange = (event) => {
+    console.log("ENTERING handleInputChange");
     const target = event.target;
     const inputName = target.name;
     const inputValue = target.value;
 
-    this.setState({
-      [inputName]: inputValue,
-    });
+    console.log(target);
+    console.log(inputName);
+    console.log(inputValue);
+
+    setState({...state, [inputName]: inputValue});
+    
+    console.log(state);
+
+
+    console.log("LEAVING handleInputChange");
   }
 
-  handleSubmit(event) {
+  const handleSubmit = (event) => {
+    console.log("ENTERING handleSubmit");
+
     event.preventDefault();
 
-    const loginRequest = Object.assign({}, this.state);
+    const loginRequest = Object.assign({}, state);
+
+    console.log(state);
+    console.log(loginRequest);
 
     login(loginRequest)
       .then((response) => {
@@ -111,7 +139,7 @@ class LoginForm extends Component {
         toast("You're successfully logged in!", {
           theme: "colored",
         });
-        this.props.history.push("/");
+        props.history.push("/");
       })
       .catch((error) => {
         toast.error(
@@ -122,19 +150,19 @@ class LoginForm extends Component {
           }
         );
       });
+    console.log("LEAVING handleSubmit");
   }
 
-  render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <div className="form-item">
           <input
             type="email"
             name="email"
             className="form-control"
             placeholder="Email"
-            value={this.state.email}
-            onChange={this.handleInputChange}
+            value={state.email}
+            onChange={handleInputChange}
             required
           />
         </div>
@@ -144,8 +172,8 @@ class LoginForm extends Component {
             name="password"
             className="form-control"
             placeholder="Password"
-            value={this.state.password}
-            onChange={this.handleInputChange}
+            value={state.password}
+            onChange={handleInputChange}
             required
           />
         </div>
@@ -156,7 +184,6 @@ class LoginForm extends Component {
         </div>
       </form>
     );
-  }
 }
 
 export default Login;
