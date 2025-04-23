@@ -2,31 +2,34 @@ import React, { Component } from "react";
 import { ACCESS_TOKEN } from "./constants.js";
 import { Redirect } from "react-router-dom";
 
-class OAuth2RedirectHandler extends Component {
-  getUrlParameter(name) {
-    name = name.replace(/[[]/, "\\[").replace(/[\]]/, "\\]");
-    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+function OAuth2RedirectHandler(props) {
 
-    var results = regex.exec(this.props.location.search);
-    return results === null
-      ? ""
-      : decodeURIComponent(results[1].replace(/\+/g, " "));
-  }
+    const getUrlParameter = (name) => {
+      name = name.replace(/[[]/, "\\[").replace(/[\]]/, "\\]");
+      var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
 
-  render() {
+      console.log(props.location);
+
+      var results = regex.exec(props.location.search);
+      return results === null
+        ? ""
+        : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+
     console.log("ENTERING OAuth2RedirectHandler Component render");
-    const token = this.getUrlParameter("token");
-    const error = this.getUrlParameter("error");
+    const token = getUrlParameter("token");
+    const error = getUrlParameter("error");
 
     if (token) {
       localStorage.setItem(ACCESS_TOKEN, token);
       console.log("JUST AFTER set ACCESS_TOKEN of OAuth2RedirectHandler Component render");
+
       return (
         <Redirect
           to={{
             pathname: "/profile",
             state: {
-              from: this.props.location,
+              from: props.location,
             },
           }}
         />
@@ -37,14 +40,13 @@ class OAuth2RedirectHandler extends Component {
           to={{
             pathname: "/login",
             state: {
-              from: this.props.location,
+              from: props.location,
               error: error,
             },
           }}
         />
       );
     }
-  }
 }
 
 export default OAuth2RedirectHandler;

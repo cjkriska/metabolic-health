@@ -58,6 +58,10 @@ function App() {
     });
   }
 
+  const handleAuth = (isAuthenticated) => {
+    setAuthenticated(isAuthenticated);
+  }
+
   if(loading) {
     return <LoadingIndicator />
   }
@@ -117,7 +121,9 @@ function App() {
             ></Route>
             <Route
               path="/oauth2/redirect"
-              component={OAuth2RedirectHandler}
+              render={(props) => (
+                <OAuth2RedirectHandler setAuthentication={handleAuth} authenticated={authenticated} {...props} />
+              )}
             ></Route>
             <Route component={NotFound}></Route>
           </Switch>
