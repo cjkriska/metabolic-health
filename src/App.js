@@ -22,15 +22,20 @@ function App() {
 
   useEffect(() => {
     return () => {
+      console.log("ENTERING useEffect 1 at " + Math.floor(Date.now() / 1000));
       loadCurrentlyLoggedInUser();
+      console.log("LEAVING useEffect 1 at " + Math.floor(Date.now() / 1000));
     }
   }, []);
   
   useEffect(() => {
+      console.log("ENTERING useEffect 2 at " + Math.floor(Date.now() / 1000));
       loadCurrentlyLoggedInUser();
+      console.log("LEAVING useEffect 2 at " + Math.floor(Date.now() / 1000));
   }, []);
   
   const loadCurrentlyLoggedInUser = () => {
+    console.log("ENTERING loadCurrentlyLoggedInUser()");
     getCurrentUser()
       .then((response) => {
         setCurrentUser(response);
@@ -38,8 +43,10 @@ function App() {
         setLoading(false);
       })
       .catch((error) => {
+        console.log(error);
         setLoading(false);
       });
+    console.log("LEAVING loadCurrentlyLoggedInUser()");
   }
 
   const handleLogout = () => {
@@ -78,8 +85,9 @@ function App() {
             <Route
               path="/profile"
               render={() => (
-                console.log(authenticated),
-                console.log(currentUser),
+                console.log("ENTERING /profile ROUTE IN APP.JS"),
+                console.log("Is authenticated?: " + authenticated),
+                console.log("Current User: " + currentUser),
                 authenticated ? (
                   <Profile
                     currentUser={currentUser}
