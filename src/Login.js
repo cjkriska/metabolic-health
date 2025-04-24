@@ -106,21 +106,12 @@ function LoginForm(props) {
   });
 
   const handleInputChange = (event) => {
-    console.log("ENTERING handleInputChange");
     const target = event.target;
     const inputName = target.name;
     const inputValue = target.value;
 
-    console.log(target);
-    console.log(inputName);
-    console.log(inputValue);
-
     setState({...state, [inputName]: inputValue});
     
-    console.log(state);
-
-
-    console.log("LEAVING handleInputChange");
   }
 
   const handleSubmit = (event) => {
@@ -136,6 +127,8 @@ function LoginForm(props) {
     login(loginRequest)
       .then((response) => {
         localStorage.setItem(ACCESS_TOKEN, response.accessToken);
+        props.handleAuth(true);
+        props.loadUser();
         toast("You're successfully logged in!", {
           theme: "colored",
         });

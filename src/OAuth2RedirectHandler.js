@@ -1,8 +1,12 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import { ACCESS_TOKEN } from "./constants.js";
 import { Redirect } from "react-router-dom";
 
 function OAuth2RedirectHandler(props) {
+
+    useEffect(() => {
+       handleOAuthLogin();
+    }, []);
 
     const getUrlParameter = (name) => {
       name = name.replace(/[[]/, "\\[").replace(/[\]]/, "\\]");
@@ -19,12 +23,16 @@ function OAuth2RedirectHandler(props) {
     console.log("ENTERING OAuth2RedirectHandler Component render");
     const token = getUrlParameter("token");
     const error = getUrlParameter("error");
+  
+    const handleOAuthLogin = () => {
+      if(token) {
+        localStorage.setItem(ACCESS_TOKEN, token);
+        props.handleAuth(true);
+        props.loadUser();
+      }
+    }
 
-    if (token) {
-      localStorage.setItem(ACCESS_TOKEN, token);
-      console.log("JUST AFTER set ACCESS_TOKEN of OAuth2RedirectHandler Component render");
-
-      return (
+    return token ?
         <Redirect
           to={{
             pathname: "/profile",
@@ -32,10 +40,7 @@ function OAuth2RedirectHandler(props) {
               from: props.location,
             },
           }}
-        />
-      );
-    } else {
-      return (
+        /> :
         <Redirect
           to={{
             pathname: "/login",
@@ -45,8 +50,36 @@ function OAuth2RedirectHandler(props) {
             },
           }}
         />
-      );
-    }
+
+    // if (token) {
+    //   localStorage.setItem(ACCESS_TOKEN, token);
+    //   props.handleAuth(true);
+    //   props.loadUser();
+    //   console.log("JUST AFTER set ACCESS_TOKEN of OAuth2RedirectHandler Component render");
+    //
+    //   return (
+    //     <Redirect
+    //       to={{
+    //         pathname: "/profile",
+    //         state: {
+    //           from: props.location,
+    //         },
+    //       }}
+    //     />
+    //   );
+    // } else {
+    //   return (
+    //     <Redirect
+    //       to={{
+    //         pathname: "/login",
+    //         state: {
+    //           from: props.location,
+    //           error: error,
+    //         },
+    //       }}
+    //     />
+    //   );
+    // }
 }
 
 export default OAuth2RedirectHandler;

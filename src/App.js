@@ -21,14 +21,6 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    return () => {
-      console.log("ENTERING useEffect 1 at " + Math.floor(Date.now() / 1000));
-      loadCurrentlyLoggedInUser();
-      console.log("LEAVING useEffect 1 at " + Math.floor(Date.now() / 1000));
-    }
-  }, []);
-  
-  useEffect(() => {
       console.log("ENTERING useEffect 2 at " + Math.floor(Date.now() / 1000));
       loadCurrentlyLoggedInUser();
       console.log("LEAVING useEffect 2 at " + Math.floor(Date.now() / 1000));
@@ -110,7 +102,7 @@ function App() {
             <Route
               path="/login"
               render={(props) => (
-                <Login authenticated={authenticated} {...props} />
+                <Login loadUser={loadCurrentlyLoggedInUser} handleAuth={handleAuth} authenticated={authenticated} {...props} />
               )}
             ></Route>
             <Route
@@ -122,7 +114,7 @@ function App() {
             <Route
               path="/oauth2/redirect"
               render={(props) => (
-                <OAuth2RedirectHandler setAuthentication={handleAuth} authenticated={authenticated} {...props} />
+                <OAuth2RedirectHandler loadUser={loadCurrentlyLoggedInUser} handleAuth={handleAuth} {...props} />
               )}
             ></Route>
             <Route component={NotFound}></Route>
