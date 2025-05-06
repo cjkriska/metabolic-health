@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./css/Profile.css";
 
 function Profile(props) {
-
+  
     return (
       <div className="profile-container">
         <div className="container">

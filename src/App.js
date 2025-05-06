@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import AppHeader from "./AppHeader.js";
 import Home from "./Home.js";
 import Login from "./Login.js";
@@ -21,13 +21,10 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-      console.log("ENTERING useEffect 2 at " + Math.floor(Date.now() / 1000));
       loadCurrentlyLoggedInUser();
-      console.log("LEAVING useEffect 2 at " + Math.floor(Date.now() / 1000));
   }, []);
   
   const loadCurrentlyLoggedInUser = () => {
-    console.log("ENTERING loadCurrentlyLoggedInUser()");
     getCurrentUser()
       .then((response) => {
         setCurrentUser(response);
@@ -35,10 +32,12 @@ function App() {
         setLoading(false);
       })
       .catch((error) => {
-        console.log(error);
         setLoading(false);
       });
-    console.log("LEAVING loadCurrentlyLoggedInUser()");
+  }
+
+  const handleSetAuth = (isAuthenticated) => {
+    setAuthenticated(isAuthenticated);
   }
 
   const handleLogout = () => {
@@ -50,14 +49,9 @@ function App() {
     });
   }
 
-  const handleAuth = (isAuthenticated) => {
-    setAuthenticated(isAuthenticated);
-  }
-
   if(loading) {
     return <LoadingIndicator />
   }
-
 
     return (
       <div className="app">
@@ -68,60 +62,42 @@ function App() {
           />
         </div>
         <div className="app-body">
-          <Switch>
-            <Route exact path="/">
-              <Home />
-            </Route>
-            {/* <PrivateRoute
-              path="/profile"
-              authenticated={this.state.authenticated}
-              currentUser={this.state.currentUser}
-              component={Profile}
-            /> */}
+          <Routes>
+            <Route path="/" element={<Home />} />
             <Route
               path="/profile"
-              render={() => (
-                console.log("ENTERING /profile ROUTE IN APP.JS"),
-                console.log("Is authenticated?: " + authenticated),
-                console.log("Current User: " + currentUser),
+              element={
                 authenticated ? (
                   <Profile
                     currentUser={currentUser}
                     path="/profile"
                   />
                 ) : (
-                  <Redirect
-                    to={{
-                      pathname: "/login",
-                    }}
+                  <Navigate
+                    to="/login"
+                    replace
                   />
                 )
-              )
+
               }
             />
             <Route
               path="/login"
-              render={(props) => (
-                <Login loadUser={loadCurrentlyLoggedInUser} handleAuth={handleAuth} authenticated={authenticated} {...props} />
-              )}
-            ></Route>
+              element={<Login loadUser={loadCurrentlyLoggedInUser} authenticated={authenticated} />}
+            />
             <Route
               path="/signup"
-              render={(props) => (
-                <Signup authenticated={authenticated} {...props} />
-              )}
-            ></Route>
+              element={<Signup authenticated={authenticated} />}
+            />
             <Route
               path="/oauth2/redirect"
-              render={(props) => (
-                <OAuth2RedirectHandler loadUser={loadCurrentlyLoggedInUser} handleAuth={handleAuth} {...props} />
-              )}
-            ></Route>
-            <Route component={NotFound}></Route>
-          </Switch>
+              element={<OAuth2RedirectHandler loadUser={loadCurrentlyLoggedInUser} authenticated={authenticated}/>}
+            />
+            <Route element={<NotFound/>} />
+          </Routes>
         </div>
 
-        <ToastContainer />
+        <ToastContainer position="bottom-right" />
 
       </div>
     );

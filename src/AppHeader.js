@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Link, NavLink } from "react-router-dom";
 import "./css/AppHeader.css";
 
-class AppHeader extends Component {
-  render() {
+function AppHeader(props) {
+
     return (
       <header className="app-header">
         <div className="container">
@@ -14,13 +14,13 @@ class AppHeader extends Component {
           </div>
           <div className="app-options">
             <nav className="app-nav">
-              {this.props.authenticated ? (
+              {props.authenticated ? (
                 <ul>
                   <li>
                     <NavLink to="/profile">Profile</NavLink>
                   </li>
                   <li>
-                    <a onClick={this.props.onLogout}>Logout</a>
+                    <a onClick={props.onLogout}>Logout</a>
                   </li>
                 </ul>
               ) : (
@@ -38,7 +38,7 @@ class AppHeader extends Component {
         </div>
       </header>
     );
-  }
+
 }
 
 export default AppHeader;

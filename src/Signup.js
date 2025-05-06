@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./css/Signup.css";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import {
   GOOGLE_AUTH_URL,
   FACEBOOK_AUTH_URL,
@@ -12,15 +12,16 @@ import googleLogo from "./images/google-logo.png";
 import githubLogo from "./images/github-logo.png";
 import { toast } from "react-toastify";
 
-class Signup extends Component {
-  render() {
-    if (this.props.authenticated) {
+function Signup(props) {
+
+    if (props.authenticated) {
       return (
-        <Redirect
+        <Navigate
           to={{
             pathname: "/",
-            state: { from: this.props.location },
+            state: { from: props.location },
           }}
+          replace
         />
       );
     }
@@ -33,14 +34,14 @@ class Signup extends Component {
           <div className="or-separator">
             <span className="or-text">OR</span>
           </div>
-          <SignupForm {...this.props} />
+          <SignupForm {...props} />
           <span className="login-link">
             Already have an account? <Link to="/login">Login!</Link>
           </span>
         </div>
       </div>
     );
-  }
+
 }
 
 class SocialSignup extends Component {
@@ -96,7 +97,6 @@ class SignupForm extends Component {
         toast.success(
           "You're successfully registered. Please login to continue!"
         );
-        this.props.history.push("/login");
       })
       .catch((error) => {
         toast.error(

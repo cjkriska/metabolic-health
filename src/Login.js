@@ -1,4 +1,5 @@
 import React, { Component, useEffect, useState, useCallback } from "react";
+import { useLocation } from "react-router-dom";
 import "./css/Login.css";
 import {
   GOOGLE_AUTH_URL,
@@ -7,46 +8,32 @@ import {
   ACCESS_TOKEN,
 } from "./constants";
 import { login } from "./APIUtils";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import fbLogo from "./images/fb-logo.png";
 import googleLogo from "./images/google-logo.png";
 import githubLogo from "./images/github-logo.png";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 function Login(props) {
-  {/*componentDidMount() {
-    // If the OAuth2 login encounters an error, the user is redirected to the /login page with an error.
-    // Here we display the error and then remove the error query parameter from the location.
-  if (this.props.location.state && this.props.location.state.error) {
-      setTimeout(() => {
-        toast.error(this.props.location.state.error);
-        this.props.history.replace({
-          pathname: this.props.location.pathname,
-          state: {},
-        });
-      }, 100);
-    }
-  }*/}
 
     useEffect(() => {
-      if(props.location.state && props.location.state.error) {
+      if(location.state && location.state.error) {
         setTimeout(() => {
-          toast.error(props.location.state.error);
-          props.history.replace({
-            pathname: props.location.pathname,
-            state: {},
-          });
+          toast.error(location.state.error);
         }, 100);
       }
     },[]);
 
+    const location = useLocation();
+
     if (props.authenticated) {
       return (
-        <Redirect
+        <Navigate
           to={{
-            pathname: "/",
+            pathname: "/profile",
             state: { from: props.location },
           }}
+          replace
         />
       );
     }
@@ -66,10 +53,11 @@ function Login(props) {
         </div>
       </div>
     );
-  
+
 }
 
 function SocialLogin() {
+
     return (
       <div className="social-login">
         <a className="btn btn-block social-btn google" href={GOOGLE_AUTH_URL}>
@@ -86,19 +74,10 @@ function SocialLogin() {
         </a> */}
       </div>
     );
+
 }
 
 function LoginForm(props) {
-
-{/*constructor(props) {
-    super(props);
-    this.state = {
-      email: "",
-      password: "",
-    };
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }*/}
 
   const [state, setState] = useState({
     email: "",
@@ -115,24 +94,18 @@ function LoginForm(props) {
   }
 
   const handleSubmit = (event) => {
-    console.log("ENTERING handleSubmit");
 
     event.preventDefault();
 
     const loginRequest = Object.assign({}, state);
 
-    console.log(state);
-    console.log(loginRequest);
-
     login(loginRequest)
       .then((response) => {
         localStorage.setItem(ACCESS_TOKEN, response.accessToken);
-        props.handleAuth(true);
         props.loadUser();
-        toast("You're successfully logged in!", {
+        toast.success("You're successfully logged in!", {
           theme: "colored",
         });
-        props.history.push("/");
       })
       .catch((error) => {
         toast.error(
@@ -143,7 +116,6 @@ function LoginForm(props) {
           }
         );
       });
-    console.log("LEAVING handleSubmit");
   }
 
     return (

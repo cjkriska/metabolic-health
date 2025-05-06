@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import "./css/Home.css";
 
-class Home extends Component {
-  render() {
+function Home() {
+  
     return (
       <div className="home-container">
         <div className="container">
@@ -27,7 +27,7 @@ class Home extends Component {
         </div>
       </div>
     );
-  }
+
 }
 
 export default Home;
