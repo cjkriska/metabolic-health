@@ -1,7 +1,28 @@
 .dashboard-container {
     display: flex;
+    padding: 30px;
+}
+
+.dash-left-column {
+    
+}
+
+.dash-right-column {
+    display: flex;
     flex-direction: column;
-    padding-top: 30px;
+}
+
+.dash-top-row {
+}
+
+.dash-bottom-row {
+    display: flex;
+}
+
+.dash-bottom-row-left {
+}
+
+.dash-bottom-row-right {
 }
 
 .dashboard-first-row {
