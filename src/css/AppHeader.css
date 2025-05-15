@@ -1,6 +1,7 @@
 .app-header {
     height: 60px;
-    position: relative;
+    width: 100%;
+    position: fixed;
     z-index: 10;
 }
 
@@ -8,6 +9,11 @@
     line-height: 60px;
     vertical-align: middle;
     font-size: 1.35em;
+    color: #b03a2e;
+}
+
+.app-title:hover {
+    color: #af5248;
 }
 
 .app-branding {
@@ -39,9 +45,9 @@
 }
 
 .app-nav ul li a:hover {
-    color: #0f96f6;
+    color: #b03a2e;
 }
 
 .app-nav ul li a.active {
-    color: #0f96f6;
+    color: #b03a2e;
 }
