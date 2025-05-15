@@ -23,7 +23,7 @@ function App() {
   useEffect(() => {
       loadCurrentlyLoggedInUser();
   }, []);
-  
+
   const loadCurrentlyLoggedInUser = () => {
     getCurrentUser()
       .then((response) => {

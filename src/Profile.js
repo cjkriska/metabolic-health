@@ -6,10 +6,8 @@ import LearnMore from "./modules/LearnMore.js";
 import "./css/Profile.css";
 
 function Profile(props) {
-  
-    return (
-      <div>
 
+    return (
         {/* <div className="profile-container">
            <div className="container">
              <div className="profile-info">
@@ -34,27 +32,31 @@ function Profile(props) {
                </div>
              </div>
            </div>
-         </div> */}
+         </div> */},
+
         <div className="dashboard-container">
-          <div className="dash-left-column">
-            <BiomarkerData />
+          <div className="dash-intro">
+            Welcome {props.currentUser.name}! Here's your metabolic health at a glance:
           </div>
-          <div className="dash-right-column">
-            <div className="dash-top-row">
-              <HabitTracking />
+          <div className="dashboard-data-container">
+            <div className="dash-left-column">
+              <BiomarkerData />
             </div>
-            <div className="dash-bottom-row">
-              <div className="dash-bottom-row-left">
-                <Insights />
+            <div className="dash-right-column">
+              <div className="dash-top-row">
+                <HabitTracking />
               </div>
-              <div className="dash-bottom-row-right">
-                <LearnMore />
+              <div className="dash-bottom-row">
+                <div className="dash-bottom-row-left">
+                  <Insights />
+                </div>
+                <div className="dash-bottom-row-right">
+                  <LearnMore />
+                </div>
               </div>
             </div>
           </div>
         </div>
-
-      </div>
     );
 
 }

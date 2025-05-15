@@ -1,45 +1,59 @@
 .dashboard-container {
     display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.dash-intro {
     padding: 30px;
 }
 
+.dashboard-data-container {
+    display: flex;
+    padding: 30px;
+    flex-grow: 1;
+}
+
 .dash-left-column {
-    
+    flex-grow: 1;
+    padding: 20px;
 }
 
 .dash-right-column {
     display: flex;
     flex-direction: column;
+    flex-grow: 2;
 }
 
 .dash-top-row {
+    flex-grow: 1;
+    padding: 20px;
 }
 
 .dash-bottom-row {
     display: flex;
+    flex-grow: 1;
 }
 
 .dash-bottom-row-left {
+    flex-grow: 1;
+    padding: 20px;
 }
 
 .dash-bottom-row-right {
-}
-
-.dashboard-first-row {
-    display: flex;
-    justify-content: space-around;
-}
-
-.dashboard-second-row {
-    display: flex;
-    justify-content: space-around;
+    flex-grow: 1;
+    padding: 20px;
 }
 
 .card {
-    box-shadow: 10px 5px 5px gray;
-    margin: 9px;
+    height: 100%;
+    background-color: white;
+    box-shadow: 10px 5px 5px #CACACA,
+        -1px -1px 5px #CACACA;
+    border-radius: 10px;
     padding: 9px;
 }
+
 
 
 .profile-container {

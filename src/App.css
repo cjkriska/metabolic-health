@@ -1,0 +1,9 @@
+.app {
+  height: 100vh;
+  background-color: #E4E4E4;
+}
+
+.app-body {
+  height: 100%;
+  padding-top: 60px;
+}
