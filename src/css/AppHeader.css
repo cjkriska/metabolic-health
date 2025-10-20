@@ -3,13 +3,14 @@
     width: 100%;
     position: fixed;
     z-index: 10;
+    background-color: #10B981;
 }
 
 .app-title {
     line-height: 60px;
     vertical-align: middle;
     font-size: 1.35em;
-    color: #b03a2e;
+    color: #1E3A8A;
 }
 
 .app-title:hover {

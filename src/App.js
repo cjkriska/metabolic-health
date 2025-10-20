@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { Component, useState, useEffect, useCallback } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import AppHeader from "./AppHeader.js";
 import Home from "./Home.js";
@@ -19,6 +19,18 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [authenticated, setAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const handleKeyPress = useCallback(event => {
+    console.log("Key pressed: " + event.key);
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyPress);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [handleKeyPress]);
 
   useEffect(() => {
       loadCurrentlyLoggedInUser();
