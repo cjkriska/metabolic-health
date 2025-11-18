@@ -9,7 +9,7 @@ function AppHeader(props) {
         <div className="container">
           <div className="app-branding">
             <Link to="/" className="app-title">
-              MetHealth
+              MetaBio
             </Link>
           </div>
           <div className="app-options">

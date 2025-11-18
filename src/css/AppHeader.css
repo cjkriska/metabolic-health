@@ -1,7 +1,6 @@
 .app-header {
     height: 60px;
     width: 100%;
-    position: fixed;
     z-index: 10;
     background-color: #10B981;
 }
