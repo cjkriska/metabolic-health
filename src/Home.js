@@ -6,7 +6,7 @@ function Home() {
     return (
       <div className="home-container">
         <img src={metaBioLogo} alt="MetaBio Logo" />
-        <div className="container">
+        <div className="w-full ml-auto mr-auto pl-4 pr-4">
           <div className="graf-bg-container">
             <div className="graf-layout">
               <div className="graf-circle"></div>
